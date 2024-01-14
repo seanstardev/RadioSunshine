@@ -31,7 +31,7 @@ namespace RadioSunshine {
         private SunshineClientDto? clientDto = null;
         private bool disposed = false;
         private string? executablePath = null;
-        private static readonly string SUNSHINE_PROCESS_NAME = "sunshine"; 
+        private static readonly string SUNSHINE_PROCESS_NAME = "sunshine";
         private string? selectedFilePath = null;
 
         public static bool AdminMode { get; internal set; }
@@ -42,7 +42,6 @@ namespace RadioSunshine {
             executablePath = Process.GetCurrentProcess().MainModule.FileName;
             if (AdminMode)
                 return;
-            //Debug.WriteLine("Executable Path: " + executablePath);
 
 
             ContextMenuStrip contextMenuStrip = new ContextMenuStrip();
@@ -65,15 +64,14 @@ namespace RadioSunshine {
             trayIcon.ContextMenuStrip = contextMenuStrip;
             sunshineTimer = new Timer(OnCheckSunshineStatus, null, 0, CHECK_INTERVAL_SECONDS * 1000);
 
-            //ChangeScreenConfigUtil.Test();
         }
 
 
         internal void HandleMoonlightConnectStart(string[] args) {
-            string running = "ARGS" + Environment.NewLine;
-            foreach (var item in args) {
-                running += item + Environment.NewLine;
-            }
+            //string running = "ARGS" + Environment.NewLine;
+            //foreach (var item in args) {
+            //    running += item + Environment.NewLine;
+            //}
             newConfig = null;
             if (args.Length >= 10) {
                 clientDto = new SunshineClientDto {
@@ -197,9 +195,16 @@ namespace RadioSunshine {
                 selectedFilePath = openFileDialog.FileName;
                 pathText.Text = selectedFilePath;
                 applyBtn.Enabled = true;
+                removeBtn.Enabled = true;
             }
         }
 
+        private void removeBtn_Click(object sender, EventArgs e) {
+            if (selectedFilePath == null)
+                return;
+
+            _ = SunshineCfgHelper.RemovePrepCmd(selectedFilePath);
+        }
         private void applyBtn_Click(object sender, EventArgs e) {
             if (selectedFilePath == null || executablePath == null)
                 return;
@@ -207,8 +212,6 @@ namespace RadioSunshine {
             List<string> lines = File.ReadAllLines(selectedFilePath).ToList();
             int line = -1;
             for (int i = 0; i < lines.Count; i++) {
-                //Debug.WriteLine(lines[i]);
-
                 if (lines[i].Trim().ToLower().StartsWith("global_prep_cmd")) {
                     line = i; break;
                 }
@@ -222,8 +225,7 @@ namespace RadioSunshine {
 
             try {
                 File.WriteAllLines(selectedFilePath, lines);
-                //Debug.WriteLine("File saved successfully.");
-                MessageBox.Show("The update wass successful. Please close this application and start / restart the Sunshine service.", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("The update was successful. Please close this application and start / restart the Sunshine service.", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (IOException ex) {
                 ShowErrorDialog("An IO exception occurred: " + ex.Message);
@@ -233,10 +235,11 @@ namespace RadioSunshine {
             }
 
         }
-        private void ShowErrorDialog(string message) {
+        public static void ShowErrorDialog(string message) {
             MessageBox.Show(message, "There was a problem", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
         }
+
         //protected override void Dispose(bool disposing) {
         //    if (!disposed) {
         //        if (disposing) {

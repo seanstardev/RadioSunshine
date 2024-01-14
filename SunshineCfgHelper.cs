@@ -14,5 +14,34 @@ namespace RadioSunshine {
 
             return result;
         }
+
+        public static bool RemovePrepCmd(string cfgFullpath) {
+            List<string> lines = File.ReadAllLines(cfgFullpath).ToList();
+            int line = -1;
+            for (int i = 0; i < lines.Count; i++) {
+                if (lines[i].Trim().ToLower().StartsWith("global_prep_cmd")) {
+                    line = i; break;
+                }
+            }
+            if (line > -1) {
+                try {
+                    lines[line] = "global_prep_cmd = []";
+                    File.WriteAllLines(cfgFullpath, lines);
+                    MessageBox.Show("The removal was successful. Please close this application and start / restart the Sunshine service.", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (IOException ex) {
+                    RadioSunshineForm.ShowErrorDialog("An IO exception occurred: " + ex.Message);
+                    return false;
+                }
+                catch (UnauthorizedAccessException ex) {
+                    RadioSunshineForm.ShowErrorDialog("Unauthorized to write to the file: " + ex.Message);
+                    return false;
+                }
+                return true;
+            }
+            RadioSunshineForm.ShowErrorDialog("No changes were made as the 'global_prep_cmd' instruction could not be found.");
+            return false;
+            
+        }
     }
 }

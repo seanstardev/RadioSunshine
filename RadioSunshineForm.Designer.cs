@@ -29,6 +29,7 @@
             pathText = new TextBox();
             changeBtn = new Button();
             applyBtn = new Button();
+            removeBtn = new Button();
             SuspendLayout();
             // 
             // label1
@@ -71,7 +72,7 @@
             // applyBtn
             // 
             applyBtn.Enabled = false;
-            applyBtn.Location = new Point(12, 126);
+            applyBtn.Location = new Point(12, 91);
             applyBtn.Name = "applyBtn";
             applyBtn.Size = new Size(360, 23);
             applyBtn.TabIndex = 4;
@@ -79,11 +80,23 @@
             applyBtn.UseVisualStyleBackColor = true;
             applyBtn.Click += applyBtn_Click;
             // 
+            // removeBtn
+            // 
+            removeBtn.Enabled = false;
+            removeBtn.Location = new Point(12, 126);
+            removeBtn.Name = "removeBtn";
+            removeBtn.Size = new Size(360, 23);
+            removeBtn.TabIndex = 5;
+            removeBtn.Text = "Remove Update";
+            removeBtn.UseVisualStyleBackColor = true;
+            removeBtn.Click += removeBtn_Click;
+            // 
             // RadioSunshineForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(384, 161);
+            Controls.Add(removeBtn);
             Controls.Add(applyBtn);
             Controls.Add(changeBtn);
             Controls.Add(pathText);
@@ -106,5 +119,6 @@
         private TextBox pathText;
         private Button changeBtn;
         private Button applyBtn;
+        private Button removeBtn;
     }
 }
