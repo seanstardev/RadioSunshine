@@ -1,6 +1,6 @@
 Use entirely at your own risk. Windows 10 (and probably 11) only.
 
-This application takes the resolution and refresh rate past from Moonlight to change the Sunshine host machine's screen resolution and refresh rate to those values.
+This application takes the resolution and refresh rate passed from Moonlight to change the Sunshine host machine's screen resolution and refresh rate to those values.
 
 When the stream is paused or terminated - the resolution and refresh rate are reset.
 
